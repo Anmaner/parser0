@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+
+export COMPOSE_PROJECT_NAME=tg
+export DC_FILES=(
+  "docker-compose.yml"
+  "docker-compose.local.yml"
+)
+
+# Exporting all from .env file
+set -a
+[ -f .env ] && source .env
+[ -f .env.local ] && source .env.local
+set +a

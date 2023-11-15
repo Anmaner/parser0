@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+set -e
+
+ENV_FILE=".envdc"
+
+# -----------------------------------------------------------------------------
+# Check dependencies
+# -----------------------------------------------------------------------------
+
+if ! type docker &>/dev/null; then
+  echo "docker is required to run this script!"
+  exit 1
+fi
+
+if ! type docker-compose &>/dev/null; then
+  echo "docker-compose is required to run this script!"
+  exit 1
+fi
+
+if [[ ! -f "${ENV_FILE}" ]]; then
+  echo "Environment file [${ENV_FILE}] does not exist, cannot proceed"
+  exit 1
+fi
+
+function assemble_files_list() {
+  local args=()
+  for filename in "${DC_FILES[@]}"; do
+    args+=("-f")
+    args+=("${filename}")
+  done
+
+  echo "${args[@]}"
+}
+
+source "${ENV_FILE}"
+exec docker-compose $(assemble_files_list) "$@"

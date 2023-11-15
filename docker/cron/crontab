@@ -1,0 +1,2 @@
+#every minutes section
+* * * * * php /app/bin/console parse:general
